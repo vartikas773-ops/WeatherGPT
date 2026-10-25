@@ -1,8 +1,7 @@
 # WeatherGPT (Python edition)
 
-A Python re-build of [MartsTech/WeatherGPT](https://github.com/MartsTech/WeatherGPT):
-location-based forecast from Open-Meteo, a Groq-written summary, and a Chart.js
-visualisation. Angular + Django became FastAPI + a single HTML page.
+A Python location-based forecast from Open-Meteo, a Groq-written summary, and a Chart.js
+visualisation. 
 
 ## Run locally
 
@@ -30,3 +29,6 @@ app/summary.py    AI summary with a no-key fallback
 templates/        index.html
 static/           style.css, app.js
 ```
+## Live App:
+
+https://nimbus-nine-lovat.vercel.app/
