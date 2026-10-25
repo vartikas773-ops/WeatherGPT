@@ -1,0 +1,126 @@
+/* Sky colours are set by effects.js from the place's weather and local time. */
+@property --sky-a { syntax: "<color>"; inherits: true; initial-value: #0a1126; }
+@property --sky-b { syntax: "<color>"; inherits: true; initial-value: #1d2c5a; }
+
+:root {
+  --sky-a: #0a1126;
+  --sky-b: #1d2c5a;
+  --glass: rgba(8, 14, 32, .34);
+  --glass-line: rgba(255, 255, 255, .14);
+  --text: #fff;
+  --muted: rgba(255, 255, 255, .76);
+  --accent: #bfe3ff;
+  --radius: 18px;
+  transition: --sky-a 1.6s ease, --sky-b 1.6s ease;
+}
+* { box-sizing: border-box; margin: 0; }
+html { color-scheme: dark; background: #0a1126; min-height: 100%; }
+body {
+  color: var(--text);
+  font: 400 16px/1.55 "DM Sans", system-ui, sans-serif;
+  min-height: 100vh;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .12);
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* weather backdrop */
+.sky { position: fixed; inset: 0; z-index: -2; background: linear-gradient(180deg, var(--sky-a) 0%, var(--sky-b) 100%); }
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* header */
+.top {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  max-width: 1000px; margin: 0 auto; padding: 24px 20px 8px;
+}
+.brand {
+  font: 500 22px "Fraunces", Georgia, serif; color: var(--text);
+  text-decoration: none; margin-right: auto;
+}
+.search { position: relative; flex: 1 1 260px; max-width: 360px; }
+.search input {
+  width: 100%; padding: 11px 16px; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--glass-line);
+  backdrop-filter: blur(14px);
+}
+.search input::placeholder { color: var(--muted); }
+.results {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 5;
+  list-style: none; padding: 6px; background: rgba(14, 20, 42, .96);
+  border: 1px solid var(--glass-line); border-radius: 14px; text-shadow: none;
+}
+.results li button {
+  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  padding: 9px 12px; border-radius: 10px;
+}
+.results li button:hover, .results li button:focus-visible { background: rgba(255, 255, 255, .12); }
+.results small { display: block; color: rgba(255, 255, 255, .65); }
+.btn {
+  background: var(--glass); border: 1px solid var(--glass-line); border-radius: 999px;
+  padding: 10px 16px; cursor: pointer; color: var(--text); backdrop-filter: blur(14px);
+}
+.btn:hover { background: rgba(255, 255, 255, .16); }
+.toggle { display: flex; background: var(--glass); border: 1px solid var(--glass-line); border-radius: 999px; padding: 3px; backdrop-filter: blur(14px); }
+.toggle button { background: none; border: 0; border-radius: 999px; padding: 7px 14px; cursor: pointer; color: var(--muted); }
+.toggle button[aria-pressed="true"] { background: #fff; color: #14203f; font-weight: 600; text-shadow: none; }
+
+/* layout */
+main { max-width: 1000px; margin: 0 auto; padding: 16px 20px 64px; }
+h2 { font: 500 15px "DM Sans", sans-serif; color: var(--muted); margin-bottom: 14px; }
+
+.empty { text-align: center; padding: 14vh 0 0; }
+.empty h1 { font: 300 clamp(34px, 6vw, 52px) "Fraunces", Georgia, serif; color: #fff; }
+.empty p { color: var(--muted); margin-top: 10px; }
+.error {
+  background: rgba(58, 42, 74, .92); color: #f0d4f9; border-radius: 14px;
+  padding: 14px 18px; margin-top: 16px; text-shadow: none;
+}
+.notice { color: var(--muted); font-size: 14px; text-align: center; margin-top: 8px; }
+
+.lead { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; margin-top: 8px; }
+.now, .summary, .panel {
+  background: var(--glass); border: 1px solid var(--glass-line);
+  border-radius: var(--radius); padding: 28px;
+  backdrop-filter: blur(16px) saturate(1.3);
+  transition: background-color 1.6s ease;
+}
+.panel { margin-top: 16px; }
+
+/* the memorable element: the big temperature */
+.place { color: var(--muted); }
+.temp { line-height: 1; margin: 14px 0 8px; }
+.temp #temp {
+  font: 300 clamp(88px, 16vw, 148px) "Fraunces", Georgia, serif;
+  letter-spacing: -0.04em; color: #fff; text-shadow: 0 4px 30px rgba(0, 0, 0, .18);
+}
+.temp .deg { font: 300 36px "Fraunces", serif; color: rgba(255, 255, 255, .85); vertical-align: top; margin-left: 4px; position: relative; top: 14px; }
+.cond { font-size: 20px; font-weight: 500; color: #fff; }
+.facts { display: flex; gap: 28px; margin-top: 26px; flex-wrap: wrap; }
+.facts dt { color: var(--muted); font-size: 14px; }
+.facts dd { font-weight: 500; }
+
+.summary { display: flex; flex-direction: column; }
+.summary-text { font-size: 18px; line-height: 1.65; max-width: 52ch; }
+.summary-text.loading { color: var(--muted); }
+.source { margin-top: auto; padding-top: 18px; color: var(--muted); font-size: 13px; }
+
+.chart { position: relative; height: 260px; }
+
+.days { list-style: none; padding: 0; }
+.days li {
+  display: grid; grid-template-columns: 56px 1fr 48px minmax(120px, 1.2fr) 84px;
+  align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--glass-line);
+}
+.days li:first-child { border-top: 0; padding-top: 0; }
+.days .rain { color: var(--accent); font-size: 14px; }
+.days .range { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.bar { height: 6px; border-radius: 99px; background: rgba(255, 255, 255, .18); position: relative; }
+.bar span { position: absolute; top: 0; bottom: 0; border-radius: 99px; background: linear-gradient(90deg, #9fd3ff, #ffd98a); }
+
+@media (max-width: 720px) {
+  .lead { grid-template-columns: 1fr; }
+  .now, .summary, .panel { padding: 22px; }
+  .days li { grid-template-columns: 48px 40px 1fr 76px; gap: 8px; }
+  .days .label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
