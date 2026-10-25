@@ -1,4 +1,4 @@
-# WeatherGPT (Python edition)
+# WeatherGPT 
 
 A Python location-based forecast from Open-Meteo, a Groq-written summary, and a Chart.js
 visualisation. 
@@ -31,4 +31,4 @@ static/           style.css, app.js
 ```
 ## Live App:
 
-https://nimbus-nine-lovat.vercel.app/
+https://weather-gpt-peach-delta.vercel.app/
